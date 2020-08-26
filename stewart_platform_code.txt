@@ -1,0 +1,301 @@
+#define F_CPU 16000000L
+#include<avr/io.h>
+#include<util/delay.h>
+
+int a, A;
+int b, B;
+int c, C;
+int d, D;
+int e, E;
+int f, F;
+
+int count;
+int t, q, q;
+
+void one_cycle()
+{
+PORTB = 0x20; //make clock pulse high
+for(count=0;count<t; count++)
+{
+_delay_us(10);
+}
+PORTB = 0;// make clock pulse low
+_delay_us(1);
+}
+
+int Move_a()
+{
+	if (a > A)
+	{ a = a-1;
+		if(a < A)
+		{a = A;}
+		}
+}
+	else if (a < A)
+	{ a = a+1;
+		if (a > A)
+		{a = A;}
+	}
+	return a;
+	}
+
+int Move_b()
+{
+	if (b > B)
+	{ b = b-1;
+		if(b < B)
+		{b = B;}
+		}
+}
+	else if (b < B)
+	{ b = b+1;
+		if (b > B)
+		{b = B;}
+	}
+	return b;
+	}
+
+int Move_c()
+{
+	if (c > C)
+	{ c = c-1;
+		if(c < C)
+		{c = C;}
+		}
+}
+	else if (c < C)
+	{ c = c+1;
+		if (c > C)
+		{c = C;}
+	}
+	return c;
+	}
+
+
+int Move_d()
+{
+	if (d > D)
+	{ d = d-1;
+		if(d < D)
+		{d = D;}
+		}
+}
+	else if (d < D)
+	{ d = d+1;
+		if (d > D)
+		{d = D;}
+	}
+	return d;
+	}
+
+int Move_e()
+{
+	if (e > E)
+	{ e = e-1;
+		if(e < E)
+		{e = E;}
+		}
+}
+	else if (e < E)
+	{ e = e+1;
+		if (e > E)
+		{e = E;}
+	}
+	return e;
+	}
+
+int Move_f()
+{
+	if (f > F)
+	{ f = f-1;
+		if(f < F)
+		{f = F;}
+		}
+}
+	else if (f < F)
+	{ f = f+1;
+		if (f > F)
+		{f = F;}
+	}
+	return f;
+	}
+
+
+int main()
+{
+DDRB = 0x30; // PB4 and PB5 are outputs
+DDRD = 0; // PORTD is input
+PORTD = 0xFF; // all pins on PORTD are pulled up
+
+a = 105; // REST
+b = 157;
+c = 115;
+d = 155;
+e = 112;
+f = 148;
+
+
+while(1)
+{
+PORTB = 0x10; // reset the CD4017
+_delay_us(10);
+
+t = a;
+one_cycle();
+
+t = b;
+one_cycle();
+
+t = c;
+one_cycle();
+
+t = d;
+one_cycle();
+
+t = e;
+one_cycle();
+
+t = f;
+one_cycle();
+
+t = (1500 - (a+b+c+d+e+f));
+one_cycle(); // waste time to complete 20 ms
+
+if (!(PIND & (1<<PD2)))  // Heave
+{
+A = 65;
+B = 197;
+C = 73;
+D = 196;
+E = 70;
+F = 188;
+
+Move_a();
+Move_b();
+Move_c();
+Move_d();
+Move_e();
+Move_f();
+}
+
+else if (!(PIND & (1<<PD7)))  // YAW-LEFT
+{
+A = 65;
+B = 157;
+C = 73;
+D = 155;
+E = 70;
+F = 148;
+
+Move_a();
+Move_b();
+Move_c();
+Move_d();
+Move_e();
+Move_f();
+}
+
+else if (!(PIND & (1<<PD6)))  // YAW-RIGHT
+{
+A = 105;
+B = 197;
+C = 115;
+D = 196;
+E = 112;
+F = 188;
+
+Move_a();
+Move_b();
+Move_c();
+Move_d();
+Move_e();
+Move_f();
+}
+
+else if (!(PIND & (1<<PD0)))  // ROLL-LEFT
+{
+A = 105;
+B = 157;
+C = 160;
+D = 111;
+E = 70;
+F = 188;
+
+Move_a();
+Move_b();
+Move_c();
+Move_d();
+Move_e();
+Move_f();
+}
+
+else if (!(PIND & (1<<PD5)))  // ROLL-RIGHT
+{
+A = 105;
+B = 157;
+C = 73;
+D = 196;
+E = 155;
+F = 105;
+
+Move_a();
+Move_b();
+Move_c();
+Move_d();
+Move_e();
+Move_f();
+}
+
+else if (!(PIND & (1<<PD1)))  // (CLIMB)
+{
+A = 65;
+B = 197;
+C = 160;
+D = 111;
+E = 155;
+F = 105;
+
+Move_a();
+Move_b();
+Move_c();
+Move_d();
+Move_e();
+Move_f();
+}
+
+else if (!(PIND & (1<<PD3)))  // DIVE
+{
+A = 147;
+B = 112;
+C = 73;
+D = 196;
+E = 70;
+F = 188;
+
+Move_a();
+Move_b();
+Move_c();
+Move_d();
+Move_e();
+Move_f();
+}
+
+
+else 
+{
+A = 105;
+B = 157;
+C = 115;
+D = 155;
+E = 112;
+F = 148;
+
+Move_a();
+Move_b();
+Move_c();
+Move_d();
+Move_e();
+Move_f();
+}
+}
+	}
